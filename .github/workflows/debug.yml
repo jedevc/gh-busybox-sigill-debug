@@ -1,0 +1,31 @@
+name: debug
+
+on: [push]
+
+jobs:
+  debug_busybox:
+    runs-on: ubuntu-latest
+    name: Debug busybox
+    strategy:
+      fail-fast: false
+      matrix:
+        id:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+    steps:
+    - name: Print CPU
+      run: |
+        cat /proc/cpuinfo | grep model
+    - name: Busybox 1.35
+      run: |
+        docker run -t --rm busybox:1.35 sha256sum /etc/passwd
+    - name: Busybox latest
+      run: |
+        docker run -t --rm busybox sha256sum /etc/passwd
