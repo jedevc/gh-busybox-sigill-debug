@@ -23,7 +23,7 @@ jobs:
     - name: Deps
       run: |
         sudo apt-get update
-        sudo apt-get install -y cpuid
+        sudo apt-get install -y cpuid gdb
     - name: Print CPU
       run: |
         echo "--------------------------------------------------------------------------------"
@@ -47,6 +47,4 @@ jobs:
         docker run -t --rm -v $PWD/out:/out busybox cp /bin/busybox /out
         
         cp out/busybox out/sha256sum
-        sudo ./out/sha256sum ./out/sha256sum || true
-        sudo ls -lh /tmp/
-        sudo xxd /tmp/core*
+        echo "" | gdb -ex 'run' -ex 'x/10i $rip' --args ./out/sha256sum ./out/sha256sum
