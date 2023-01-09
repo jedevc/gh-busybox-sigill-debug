@@ -20,9 +20,21 @@ jobs:
           - 8
           - 9
     steps:
+    - name: Deps
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cpuid
     - name: Print CPU
       run: |
-        cat /proc/cpuinfo | grep model
+        echo "--------------------------------------------------------------------------------"
+        echo "/proc/cpuinfo"
+        echo "--------------------------------------------------------------------------------"
+        cat /proc/cpuinfo
+
+        echo "--------------------------------------------------------------------------------"
+        echo "cpuid"
+        echo "--------------------------------------------------------------------------------"
+        cpuid
     - name: Busybox 1.35
       run: |
         docker run -t --rm busybox:1.35 sha256sum /etc/passwd
