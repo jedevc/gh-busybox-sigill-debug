@@ -40,4 +40,13 @@ jobs:
         docker run -t --rm busybox:1.35 sha256sum /etc/passwd
     - name: Busybox latest
       run: |
-        docker run -t --rm busybox sha256sum /etc/passwd
+        ulimit -c unlimited
+        echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
+
+        mkdir out
+        docker run -t --rm -v $PWD/out:/out busybox cp /bin/busybox /out
+        
+        cp out/busybox out/sha256sum
+        sudo ./out/sha256sum ./out/sha256sum || true
+        sudo ls -lh /tmp/
+        sudo xxd /tmp/core*
